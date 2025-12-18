@@ -1,0 +1,16 @@
+import { Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
+
+export const Pretendard = localFont({
+  src: "./PretendardVariable.woff2",
+  display: "swap",
+  weight: "400 700",
+  preload: true,
+  variable: "--font-pretendard",
+});
+
+export const GeistMono = Geist_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-geist-mono",
+});

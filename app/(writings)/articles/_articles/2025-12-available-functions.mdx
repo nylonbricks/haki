@@ -1,0 +1,130 @@
+export const metadata = {
+    title: "사용할 수 있는 기능들",
+    description: "",
+    date: "2025.12.18",
+    comments: false,
+}
+
+## 1. Headers
+
+# h1 - 제목 (페이지 당 하나만 사용 가능)
+## h2 - 섹션 제목
+### h3 - 하위 섹션 제목
+
+`h3` 아래 단계의 헤더는 사용하지 마세요. 계층이 깊어질수록 글이 길어지고, 전달력은 약해집니다.
+
+---
+
+## 2. Link
+- 내부 링크: `[링크 텍스트](/경로)` 를 이용하여 사이트 내 다른 페이지로 연결할 수 있습니다.
+
+예: [홈페이지](/)
+
+- 외부 링크: `[링크 텍스트](https://example.com)` 를 이용하여 외부 사이트로 연결할 수 있습니다.
+
+예: [haklee.me](https://www.haklee.me)
+
+---
+
+## 3. Media Embedding
+### 1) Images
+
+- `![대체 텍스트](이미지 URL)` 를 이용하여 이미지를 삽입할 수 있습니다.
+- 내부 이미지는 `/assets/images` 폴더에 포함해야 합니다.
+- `image-wrapper` 클래스를 이용하면 이미지를 조금 더 보기 좋게 감쌀 수 있습니다.
+- 예(image-wrapper, w-24):
+
+<div className="image-wrapper w-24">![nylonbricks](nylonbricks.png)</div>
+- 예(image-wrapper):
+
+<div className="image-wrapper">![nylonbricks](nylonbricks.png)![nylonbricks](nylonbricks.png)![nylonbricks](nylonbricks.png)</div>
+- 예(image-wrapper expand):
+
+<div className="image-wrapper expand">![nylonbricks](nylonbricks.png)![nylonbricks](nylonbricks.png)![nylonbricks](nylonbricks.png)</div>
+
+### 2) Videos
+
+- 비디오 삽입은 HTML `<video>` 태그를 사용해야 합니다.
+- `video-wrapper` 클래스를 이용하면 비디오를 조금 더 보기 좋게 감쌀 수 있습니다.
+- 예:
+<video className="video-wrapper aspect-1180/668 max-w-130" controls autoPlay loop>
+    <source src="https://static.haklee.me/2025-12-on-apple-design/apple-spinner.mp4" type="video/mp4"/>
+</video>
+
+### 3) Other Embeds
+
+- YouTube, Twitter 등 다른 미디어 임베드는 HTML `<iframe>` 태그를 사용해야 합니다.
+- 예:
+
+<iframe
+    className="video-wrapper w-full h-auto aspect-video"
+    src="https://www.youtube.com/embed/ux3QETpLcPs"
+    title="劇場版『チェンソーマン レゼ篇』オープニングムービー 　主題歌：米津玄師「IRIS OUT」“Chainsaw Man – The Movie: Reze Arc” – Opening Movie"
+    frameBorder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerPolicy="strict-origin-when-cross-origin"
+    allowFullScreen />
+
+---
+
+## 3. Lists
+### Unordered List
+`- ` 또는 `* ` 를 이용하여 순서 없는 리스트를 만들 수 있습니다.
+
+예:
+- 아이템 1
+- 아이템 2
+  - 서브 아이템 2.1
+  - 서브 아이템 2.2
+- 아이템 3
+
+### Ordered List
+`1. ` 를 이용하여 순서 있는 리스트를 만들 수 있습니다.
+
+예:
+1. 첫 번째 아이템
+2. 두 번째 아이템
+   1. 서브 아이템 2.1
+   2. 서브 아이템 2.2
+3. 세 번째 아이템
+
+---
+
+## 4. Code Blocks (for Developers)
+
+- Inline Code: ` `` ` 를 이용하면 인라인 코드 블록을 만들 수 있습니다.
+
+예: `const x = 10;`
+
+- Code Block: ` ```language ``` ` 를 이용하면 언어별(옵셔널) 코드 블록을 만들 수 있습니다.
+
+예:
+```typescript
+function greet(name: string): string {
+  return `Hello, ${name}!`;
+}
+```
+
+---
+
+## 5. KaTeX (for Math Expressions)
+
+- Inline KaTeX: `<InlineMath />` 를 이용하면 인라인 수식 표현이 가능합니다.
+
+예: <InlineMath>\(E = mc^2\)</InlineMath>
+
+- Block KaTeX: `<BlockMath />` 를 이용하면 블록 수식 표현이 가능합니다.
+
+예:
+
+<BlockMath>\int_0^\infty x^2 dx</BlockMath>
+
+## 6. 기타 기능들
+
+- `<ReplyLine />`: 인용구를 보기 좋게 꾸며줍니다.
+
+예:
+<ReplyLine>이것은 인용구입니다.</ReplyLine>
+
+- Giscus: 글 하단에 댓글 기능을 추가합니다.
+  - 사용을 원하는 경우, 게시글 메타데이터에서 `comments: true` 로 설정할 수 있습니다.
