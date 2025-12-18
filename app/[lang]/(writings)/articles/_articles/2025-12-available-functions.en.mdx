@@ -1,0 +1,130 @@
+export const metadata = {
+    title: "Available Functions",
+    description: "",
+    date: "2025.12.18",
+    comments: false,
+}
+
+## 1. Headers
+
+# h1 - Title (Only one per page)
+## h2 - Section Title
+### h3 - Subsection Title
+
+Avoid using headers below `h3`. The deeper the hierarchy, the longer the article becomes, and the weaker the delivery.
+
+---
+
+## 2. Link
+- Internal Link: Use `[Link Text](/path)` to link to other pages within the site.
+
+Example: [Home](/)
+
+- External Link: Use `[Link Text](https://example.com)` to link to external sites.
+
+Example: [haklee.me](https://www.haklee.me)
+
+---
+
+## 3. Media Embedding
+### 1) Images
+
+- Use `![Alt Text](Image URL)` to insert images.
+- Internal images must be included in the `/assets/images` folder.
+- You can use the `image-wrapper` class to wrap images for better presentation.
+- Example (image-wrapper, w-24):
+
+<div className="image-wrapper w-24">![nylonbricks](nylonbricks.png)</div>
+- Example (image-wrapper):
+
+<div className="image-wrapper">![nylonbricks](nylonbricks.png)![nylonbricks](nylonbricks.png)![nylonbricks](nylonbricks.png)</div>
+- Example (image-wrapper expand):
+
+<div className="image-wrapper expand">![nylonbricks](nylonbricks.png)![nylonbricks](nylonbricks.png)![nylonbricks](nylonbricks.png)</div>
+
+### 2) Videos
+
+- Video insertion must use the HTML `<video>` tag.
+- You can use the `video-wrapper` class to wrap videos for better presentation.
+- Example:
+<video className="video-wrapper aspect-1180/668 max-w-130" controls autoPlay loop>
+    <source src="https://static.haklee.me/2025-12-on-apple-design/apple-spinner.mp4" type="video/mp4"/>
+</video>
+
+### 3) Other Embeds
+
+- For YouTube, Twitter, etc., use the HTML `<iframe>` tag.
+- Example:
+
+<iframe
+    className="video-wrapper w-full h-auto aspect-video"
+    src="https://www.youtube.com/embed/ux3QETpLcPs"
+    title="Chainsaw Man – The Movie: Reze Arc – Opening Movie"
+    frameBorder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerPolicy="strict-origin-when-cross-origin"
+    allowFullScreen />
+
+---
+
+## 3. Lists
+### Unordered List
+Use `- ` or `* ` to create an unordered list.
+
+Example:
+- Item 1
+- Item 2
+  - Sub Item 2.1
+  - Sub Item 2.2
+- Item 3
+
+### Ordered List
+Use `1. ` to create an ordered list.
+
+Example:
+1. First Item
+2. Second Item
+   1. Sub Item 2.1
+   2. Sub Item 2.2
+3. Third Item
+
+---
+
+## 4. Code Blocks (for Developers)
+
+- Inline Code: Use ` `` ` to create an inline code block.
+
+Example: `const x = 10;`
+
+- Code Block: Use ` ```language ``` ` to create a code block with language (optional).
+
+Example:
+```typescript
+function greet(name: string): string {
+  return `Hello, ${name}!`;
+}
+```
+
+---
+
+## 5. KaTeX (for Math Expressions)
+
+- Inline KaTeX: Use `<InlineMath />` for inline math expressions.
+
+Example: <InlineMath>\(E = mc^2\)</InlineMath>
+
+- Block KaTeX: Use `<BlockMath />` for block math expressions.
+
+Example:
+
+<BlockMath>\int_0^\infty x^2 dx</BlockMath>
+
+## 6. Other Features
+
+- `<ReplyLine />`: Decorates quotes nicely.
+
+Example:
+<ReplyLine>This is a quote.</ReplyLine>
+
+- Giscus: Adds comment functionality at the bottom of the article.
+  - To use, set `comments: true` in the article metadata.

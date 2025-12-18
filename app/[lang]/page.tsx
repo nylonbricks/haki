@@ -2,47 +2,73 @@ import Link from "next/link";
 import { twMerge } from "tailwind-merge";
 import { routes } from "~/constants/routes";
 import { type ArticleItem, getArticleList } from "~/libs/articles";
+import { getDictionary } from "./dictionaries";
+import { type Locale, i18n } from "../../i18n-config";
 
-const Page = async () => {
+type PageProps = {
+  params: Promise<{ lang: Locale }>;
+};
+
+const Page = async ({ params }: PageProps) => {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
   const [thoughts, articles] = await Promise.all([
-    getArticleList("thoughts"),
-    getArticleList("articles"),
+    getArticleList("thoughts", lang),
+    getArticleList("articles", lang),
   ]);
 
   return (
     <>
       <p className="text-balance break-keep leading-relaxed">
-        Begin with a single sentence that introduces who you are.
+        {dict.home.intro}
       </p>
 
       <p className="mt-8 text-balance break-keep leading-relaxed">
-        Follow it with a short description of your hobbies and personal
-        philosophy. Aim for at least three lines—if it’s too brief, readers may
-        find it harder to get a sense of who you are.
+        {dict.home.description}
       </p>
 
       <div className="mt-16 grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-6">
         <div className="flex flex-col gap-4">
           <Link
             className="w-fit font-semibold text-sm text-text-secondary"
-            href={routes.crafts}
+            href={
+              lang === i18n.defaultLocale
+                ? routes.crafts
+                : `/${lang}${routes.crafts}`
+            }
           >
-            Craft
+            {dict.home.sections.crafts}
           </Link>
         </div>
 
         <ItemListSection
-          getItemLink={(slug) => routes.thought(slug)}
+          getItemLink={(slug) => 
+            lang === i18n.defaultLocale
+              ? routes.thought(slug)
+              : `/${lang}${routes.thought(slug)}`
+          }
           items={thoughts}
-          sectionHref={routes.thoughts}
-          title="Thoughts"
+          sectionHref={
+            lang === i18n.defaultLocale
+              ? routes.thoughts
+              : `/${lang}${routes.thoughts}`
+          }
+          title={dict.home.sections.thoughts}
         />
 
         <ItemListSection
-          getItemLink={(slug) => routes.article(slug)}
+          getItemLink={(slug) => 
+            lang === i18n.defaultLocale
+              ? routes.article(slug)
+              : `/${lang}${routes.article(slug)}`
+          }
           items={articles}
-          sectionHref={routes.articles}
-          title="Articles"
+          sectionHref={
+            lang === i18n.defaultLocale
+              ? routes.articles
+              : `/${lang}${routes.articles}`
+          }
+          title={dict.home.sections.articles}
         />
       </div>
     </>

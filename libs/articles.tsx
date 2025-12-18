@@ -1,8 +1,6 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
-const MDX_EXTENSION_REGEX = /\.mdx$/;
-
 export type ArticleItem = {
   slug: string;
   title: string;
@@ -11,11 +9,12 @@ export type ArticleItem = {
   sort: number;
 };
 
-export async function getArticleList(_route: string) {
+export async function getArticleList(_route: string, locale = "en") {
   const route = _route.replace(/^\/+/g, "");
   const directory = path.join(
     process.cwd(),
     "app",
+    "[lang]",
     "(writings)",
     route,
     "_articles"
@@ -24,12 +23,14 @@ export async function getArticleList(_route: string) {
   const articles = await fs.readdir(directory);
 
   const items: ArticleItem[] = [];
+  const suffix = `.${locale}.mdx`;
+
   for (const article of articles) {
-    if (!article.endsWith(".mdx")) {
+    if (!article.endsWith(suffix)) {
       continue;
     }
     const module = await import(
-      `~/app/(writings)/${route}/_articles/${article}`
+      `~/app/[lang]/(writings)/${route}/_articles/${article}`
     );
 
     if (!module.metadata) {
@@ -37,7 +38,7 @@ export async function getArticleList(_route: string) {
     }
 
     items.push({
-      slug: article.replace(MDX_EXTENSION_REGEX, ""),
+      slug: article.replace(suffix, ""),
       title: module.metadata.title,
       description: module.metadata.description,
       date: module.metadata.date || "-",

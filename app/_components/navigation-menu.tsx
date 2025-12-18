@@ -30,8 +30,26 @@ const menu = [
   },
 ];
 
-export const NavigationMenu = () => {
-  const pathname: string = `${usePathname().split("/")[1]}`;
+import { type Locale, i18n } from "~/i18n-config";
+
+
+
+type NavigationMenuProps = {
+  navDict: {
+    home: string;
+    crafts: string;
+    thoughts: string;
+    writings: string;
+  };
+};
+
+export const NavigationMenu = ({ navDict }: NavigationMenuProps) => {
+  const fullPathname = usePathname();
+  const segments = fullPathname.split("/");
+  const locale = (i18n.locales.includes(segments[1] as Locale) ? segments[1] : i18n.defaultLocale) as Locale;
+  
+  const pathWithoutLocale = fullPathname.replace(`/${locale}`, "") || "/";
+
   const [hovered, setHovered] = useState<string | null>(null);
   const ulRef = useRef<HTMLUListElement>(null);
 
@@ -52,13 +70,23 @@ export const NavigationMenu = () => {
   const items = useMemo(
     () =>
       menu.map((item) => {
-        const isActive: boolean = `/${pathname}` === item.path;
+        const isActive = pathWithoutLocale === item.path || (item.path !== "/" && pathWithoutLocale.startsWith(item.path));
+
+        let href = `/${locale}${item.path === "/" ? "" : item.path}`;
+        if (locale === i18n.defaultLocale) {
+            href = item.path === "/" ? "/" : item.path;
+        }
+        
+        // Determine title key based on item.key (lowercase)
+        const titleKey = item.key.toLowerCase() as keyof typeof navDict;
+        const title = navDict[titleKey] || item.title;
 
         return (
           <NavigationMenuItem
+            href={href}
             isActive={isActive}
             isHovered={hovered === item.key}
-            item={item}
+            item={{ ...item, title }}
             key={item.key}
             onHover={(e) => {
               if (e.pointerType === "mouse") {
@@ -68,8 +96,9 @@ export const NavigationMenu = () => {
           />
         );
       }),
-    [pathname, hovered]
+    [pathWithoutLocale, locale, hovered, navDict]
   );
+
 
   return (
     <nav className="fixed bottom-4 z-overlay flex w-full items-center justify-center">
@@ -85,11 +114,13 @@ const NavigationMenuItem = ({
   isActive,
   isHovered,
   onHover,
+  href,
 }: {
   item: (typeof menu)[number];
   isActive: boolean;
   isHovered: boolean;
   onHover: (e: PointerEvent<HTMLLIElement>) => void;
+  href: string;
 }) => {
   const Icon = item.icon;
 
@@ -118,7 +149,7 @@ const NavigationMenuItem = ({
     >
       <Link
         className="relative z-10 flex items-center justify-center p-3 text-text-primary outline-none"
-        href={item.path}
+        href={href}
       >
         <Icon size={18} />
         <AnimatePresence>

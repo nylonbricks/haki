@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { twMerge } from "tailwind-merge";
 import {
@@ -11,17 +12,73 @@ import {
   SunglassesIcon,
   SunIcon,
 } from "~/components/icon";
-import { routes } from "~/constants/routes";
 import { useIsClient } from "~/hooks/use-is-client";
+import { i18n, type Locale } from "~/i18n-config";
+
+const LanguageSwitcher = () => {
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const segments = pathname?.split("/") || [];
+  const firstSegment = segments[1];
+  const isLocale = i18n.locales.includes(firstSegment as Locale);
+  const currentLocale = isLocale
+    ? (firstSegment as Locale)
+    : i18n.defaultLocale;
+
+  const toggleLocale = () => {
+    const newLocale = currentLocale === "en" ? "ko" : "en";
+
+    // biome-ignore lint: Document cookie assignment is necessary here
+    document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=2592000; SameSite=Lax`;
+
+    if (newLocale === i18n.defaultLocale) {
+      if (isLocale) {
+        const newPath = pathname.replace(`/${currentLocale}`, "") || "/";
+        router.push(newPath);
+      } else {
+        router.push(pathname || "/");
+      }
+    } else if (isLocale) {
+      const newPath = pathname.replace(`/${currentLocale}`, `/${newLocale}`);
+      router.push(newPath);
+    } else {
+      router.push(`/${newLocale}${pathname}`);
+    }
+
+    router.refresh();
+  };
+
+  return (
+    <button
+      className={twMerge(
+        "touch-hitbox cursor-pointer rounded-md px-2 py-1 font-medium text-sm transition-all duration-150",
+        "text-text-secondary hover:bg-menu-background hover:text-text-primary active:scale-[0.98]"
+      )}
+      onClick={toggleLocale}
+      type="button"
+    >
+      {currentLocale === "en" ? "EN" : "KR"}
+    </button>
+  );
+};
 
 export const Header = () => {
   const { resolvedTheme: currentTheme, setTheme } = useTheme();
+  const pathname = usePathname();
+
+  const segments = pathname?.split("/") || [];
+  const firstSegment = segments[1];
+  const isLocale = i18n.locales.includes(firstSegment as Locale);
+  const currentLocale = isLocale
+    ? (firstSegment as Locale)
+    : i18n.defaultLocale;
 
   return (
     <header className="mx-auto flex w-full max-w-3xl items-center justify-between px-5">
       <Link
         className="transition-transform duration-150 active:scale-[0.98]"
-        href={routes.home}
+        href={currentLocale === i18n.defaultLocale ? "/" : `/${currentLocale}`}
       >
         <motion.div
           className="relative flex h-13 w-13 items-center justify-center rounded-full border border-neutral-100 bg-neutral-50"
@@ -53,6 +110,7 @@ export const Header = () => {
       </Link>
 
       <div className="flex items-center gap-4 text-text-primary">
+        <LanguageSwitcher />
         <button
           className={twMerge(
             "touch-hitbox cursor-pointer rounded-md p-1 transition-all duration-150",
@@ -69,7 +127,7 @@ export const Header = () => {
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             {useIsClient() ? (
-              // biome-ignore lint/style/noNestedTernary: Improves readability in this case.
+
               currentTheme === "light" ? (
                 <MoonIcon height={22} width={22} />
               ) : (

@@ -3,5 +3,21 @@
   "extends": [
     "ultracite/core",
     "ultracite/next"
-  ]
+  ],
+  "linter": {
+    "rules": {
+      "performance": {
+        "noBarrelFile": "off"
+      },
+      "style": {
+        "noNestedTernary": "off"
+      },
+      "correctness": {
+        "useImageSize": "off",
+        "noUnknownFunction": "off",
+        "noUnknownProperty": "off",
+        "noUnknownTypeSelector": "off"
+      }
+    }
+  }
 }

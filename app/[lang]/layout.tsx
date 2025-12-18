@@ -1,4 +1,4 @@
-import "./globals.css";
+import "../globals.css";
 import "katex/dist/katex.min.css";
 
 import type { Metadata } from "next";
@@ -9,8 +9,10 @@ import { ViewTransition } from "react";
 import { twMerge } from "tailwind-merge";
 import { GeistMono, Pretendard } from "~/app/_fonts";
 import { variables } from "~/constants/variables";
-import { Header } from "./_components/header";
-import { NavigationMenu } from "./_components/navigation-menu";
+import { Header } from "../_components/header";
+import { NavigationMenu } from "../_components/navigation-menu";
+
+import type { Locale } from "../../i18n-config";
 
 export const metadata: Metadata = {
   metadataBase: new URL(variables.siteUrl),
@@ -48,40 +50,51 @@ export const metadata: Metadata = {
   },
 };
 
-const RootLayout = ({ children }: PropsWithChildren) => (
-  <html lang="en" suppressHydrationWarning>
-    <body
-      className={twMerge("pt-8 pb-12", Pretendard.variable, GeistMono.variable)}
-    >
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <Header />
-        <ViewTransition name="cross">
-          <main className="mx-auto w-full max-w-3xl px-5 py-10">
-            {children}
-          </main>
-        </ViewTransition>
-        <NavigationMenu />
-      </ThemeProvider>
+type RootLayoutProps = PropsWithChildren<{
+  params: Promise<{ lang: string }>;
+}>;
 
-      <Script
-        async
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: required to initialize GA.
-        dangerouslySetInnerHTML={{
-          __html: `
+import { getDictionary } from "./dictionaries";
+
+const RootLayout = async ({ children, params }: RootLayoutProps) => {
+  const { lang } = await params;
+  const dict = await getDictionary(lang as Locale);
+
+  return (
+    <html lang={lang} suppressHydrationWarning>
+      <body
+        className={twMerge("pt-8 pb-12", Pretendard.variable, GeistMono.variable)}
+      >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <Header />
+          <ViewTransition name="cross">
+            <main className="mx-auto w-full max-w-3xl px-5 py-10">
+              {children}
+            </main>
+          </ViewTransition>
+          <NavigationMenu navDict={dict.nav} />
+        </ThemeProvider>
+
+        <Script
+          async
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: required to initialize GA.
+          dangerouslySetInnerHTML={{
+            __html: `
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
 
           gtag('config', '${variables.ga_id}')`,
-        }}
-        id="_next-ga-init"
-      />
-      <Script
-        async
-        src={`https://www.googletagmanager.com/gtag/js?id=${variables.gt_id}`}
-      />
-    </body>
-  </html>
-);
+          }}
+          id="_next-ga-init"
+        />
+        <Script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${variables.gt_id}`}
+        />
+      </body>
+    </html>
+  );
+};
 
 export default RootLayout;

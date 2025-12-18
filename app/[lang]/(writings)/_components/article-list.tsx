@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { twMerge } from "tailwind-merge";
 import type { ArticleItem } from "~/libs/articles";
+import { type Locale, i18n } from "~/i18n-config";
 
 type ArticleListProps = {
   items: ArticleItem[];
   route: string;
+  lang: Locale;
 };
 
-export const ArticleList = ({ items, route }: ArticleListProps) => (
+export const ArticleList = ({ items, route, lang }: ArticleListProps) => (
   <ul>
     {items.map((item) => (
       <li key={item.slug}>
@@ -17,7 +19,11 @@ export const ArticleList = ({ items, route }: ArticleListProps) => (
             "hover:bg-menu-background"
           )}
           draggable={false}
-          href={`${route}/${item.slug}`}
+          href={
+            lang === i18n.defaultLocale
+              ? `${route}/${item.slug}`
+              : `/${lang}${route}/${item.slug}`
+          }
         >
           <span
             className={twMerge(

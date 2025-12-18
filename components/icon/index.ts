@@ -1,4 +1,4 @@
-// biome-ignore lint/performance/noBarrelFile: Centralized exports for icons
+
 export * from "./sources/custom/sunglasses-icon";
 export * from "./sources/logo/brand-logo";
 export * from "./sources/semantic/circle-dash-icon";

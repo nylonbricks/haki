@@ -1,0 +1,23 @@
+{
+  "home": {
+    "intro": "Begin with a single sentence that introduces who you are.",
+    "description": "Follow it with a short description of your hobbies and personal philosophy. Aim for at least three lines—if it’s too brief, readers may find it harder to get a sense of who you are.",
+    "sections": {
+      "crafts": "Craft",
+      "thoughts": "Thoughts",
+      "articles": "Articles"
+    }
+  },
+  "common": {
+    "theme": {
+      "light": "Light Mode",
+      "dark": "Dark Mode"
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "crafts": "Crafts",
+    "thoughts": "Thoughts",
+    "writings": "Writings"
+  }
+}

@@ -20,7 +20,6 @@ export function LazyImage({ src, alt, className, ...props }: LazyImageProps) {
 
   return (
     // biome-ignore lint/performance/noImgElement: Using img for lazy loading
-    // biome-ignore lint/correctness/useImageSize: Size is not required here
     <motion.img
       alt={alt}
       animate={{ opacity: isLoaded ? 1 : 0 }}
