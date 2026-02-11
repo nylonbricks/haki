@@ -43,3 +43,6 @@ next-env.d.ts
 ## IDEs and editors
 .idea
 .vscode
+
+## OMC (oh-my-claudecode)
+.omc/

@@ -51,12 +51,12 @@ const Page = async () => {
 
 export default Page;
 
-type ItemListSectionProps = {
+interface ItemListSectionProps {
   title: string;
   sectionHref: string;
   items: ArticleItem[];
   getItemLink: (slug: string) => string;
-};
+}
 
 const ItemListSection = ({
   title,

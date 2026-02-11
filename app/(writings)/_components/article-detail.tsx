@@ -1,18 +1,18 @@
 import type { ComponentType } from "react";
 import { Giscus } from "~/components/ui/giscus";
 
-type ArticleMetadata = {
+interface ArticleMetadata {
   title: string;
   description: string;
   date: string;
   comments?: boolean;
-};
+}
 
-type ArticleDetailProps = {
+interface ArticleDetailProps {
   MDXContent: ComponentType;
   metadata: ArticleMetadata;
   showDivider?: boolean;
-};
+}
 
 export const ArticleDetail = ({
   MDXContent,

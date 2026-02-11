@@ -217,8 +217,7 @@
 }
 
 @utility corner-squircle {
-  /* biome-ignore lint/correctness/noUnknownProperty: corner-shape(new property)  */
-  /* biome-ignore lint/correctness/noUnknownFunction: superellipse(new function) */
+  /* biome-ignore lint/correctness/noUnknownFunction: superellipse is experimental CSS */
   corner-shape: superellipse(1.333);
 }
 
