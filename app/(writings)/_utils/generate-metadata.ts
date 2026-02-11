@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { variables } from "~/constants/variables";
 
-type ArticleMetadata = {
+interface ArticleMetadata {
   title: string;
   description: string;
   date: string;
-};
+}
 
 export function generateArticleMetadata(
   metadata: ArticleMetadata,

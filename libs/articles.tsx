@@ -3,13 +3,13 @@ import path from "node:path";
 
 const MDX_EXTENSION_REGEX = /\.mdx$/;
 
-export type ArticleItem = {
+export interface ArticleItem {
   slug: string;
   title: string;
   description: string;
   date: string;
   sort: number;
-};
+}
 
 export async function getArticleList(_route: string) {
   const route = _route.replace(/^\/+/g, "");

@@ -2,10 +2,10 @@ import Link from "next/link";
 import { twMerge } from "tailwind-merge";
 import type { ArticleItem } from "~/libs/articles";
 
-type ArticleListProps = {
+interface ArticleListProps {
   items: ArticleItem[];
   route: string;
-};
+}
 
 export const ArticleList = ({ items, route }: ArticleListProps) => (
   <ul>

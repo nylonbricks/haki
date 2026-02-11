@@ -5,9 +5,9 @@ import { ArticleDetail } from "../../_components/article-detail";
 import { generateArticleMetadata } from "../../_utils/generate-metadata";
 import { generateArticleStaticParams } from "../../_utils/generate-static-params";
 
-type PageProps = {
+interface PageProps {
   params: Promise<{ slug: string }>;
-};
+}
 
 const Page = async ({ params }: PageProps) => {
   const { slug } = await params;
