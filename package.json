@@ -37,5 +37,10 @@
     "tailwindcss": "^4.3.0",
     "typescript": "^6.0.3",
     "ultracite": "^7.7.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "postcss": "8.5.14"
+    }
   }
 }
