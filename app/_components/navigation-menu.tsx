@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { type PointerEvent, useEffect, useMemo, useRef, useState } from "react";
+import { type PointerEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
   NotebookIcon,
@@ -33,10 +33,11 @@ const menu = [
 export const NavigationMenu = () => {
   const pathname: string = `${usePathname().split("/")[1]}`;
   const [hovered, setHovered] = useState<string | null>(null);
-  const ulRef = useRef<HTMLUListElement>(null);
+  const ulRef = useRef<HTMLUListElement | null>(null);
 
   useEffect(() => {
     const ulElement = ulRef.current;
+    // biome-ignore lint/suspicious/noUnnecessaryConditions: biome infers the ref as attached at mount, but TypeScript still types ref.current as nullable.
     if (!ulElement) {
       return;
     }
@@ -49,6 +50,15 @@ export const NavigationMenu = () => {
     };
   }, []);
 
+  const handleHover = useCallback(
+    (key: string, e: PointerEvent<HTMLLIElement>) => {
+      if (e.pointerType === "mouse") {
+        setHovered(key);
+      }
+    },
+    []
+  );
+
   const items = useMemo(
     () =>
       menu.map((item) => {
@@ -60,15 +70,11 @@ export const NavigationMenu = () => {
             isHovered={hovered === item.key}
             item={item}
             key={item.key}
-            onHover={(e) => {
-              if (e.pointerType === "mouse") {
-                setHovered(item.key);
-              }
-            }}
+            onHover={handleHover}
           />
         );
       }),
-    [pathname, hovered]
+    [pathname, hovered, handleHover]
   );
 
   return (
@@ -89,9 +95,14 @@ const NavigationMenuItem = ({
   item: (typeof menu)[number];
   isActive: boolean;
   isHovered: boolean;
-  onHover: (e: PointerEvent<HTMLLIElement>) => void;
+  onHover: (key: string, e: PointerEvent<HTMLLIElement>) => void;
 }) => {
   const Icon = item.icon;
+
+  const handlePointerEnter = useCallback(
+    (e: PointerEvent<HTMLLIElement>) => onHover(item.key, e),
+    [item.key, onHover]
+  );
 
   const animateState = {
     backgroundColor: isActive
@@ -113,7 +124,7 @@ const NavigationMenuItem = ({
       initial={initialExitState}
       key={item.path}
       layout
-      onPointerEnter={onHover}
+      onPointerEnter={handlePointerEnter}
       transition={{ duration: 0.4 }}
     >
       <Link

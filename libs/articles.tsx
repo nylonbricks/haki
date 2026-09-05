@@ -28,6 +28,7 @@ export async function getArticleList(_route: string) {
     if (!article.endsWith(".mdx")) {
       continue;
     }
+    // biome-ignore lint/performance/noAwaitInLoops: MDX article modules are imported sequentially by design; parallel imports would change module evaluation order.
     const module = await import(
       `~/app/(writings)/${route}/_articles/${article}`
     );

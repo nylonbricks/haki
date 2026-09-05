@@ -1,7 +1,7 @@
 "use client";
 
 import { type HTMLMotionProps, motion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface LazyImageProps extends HTMLMotionProps<"img"> {
   src: string;
@@ -11,6 +11,10 @@ interface LazyImageProps extends HTMLMotionProps<"img"> {
 export function LazyImage({ src, alt, className, ...props }: LazyImageProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
+
+  const handleLoad = useCallback(() => {
+    setIsLoaded(true);
+  }, []);
 
   useEffect(() => {
     if (imgRef.current?.complete) {
@@ -27,7 +31,7 @@ export function LazyImage({ src, alt, className, ...props }: LazyImageProps) {
       className={className}
       initial={{ opacity: 0 }}
       loading="lazy"
-      onLoad={() => setIsLoaded(true)}
+      onLoad={handleLoad}
       ref={imgRef}
       src={src}
       transition={{ duration: 0.5 }}
