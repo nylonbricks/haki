@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
+import { useCallback } from "react";
 import { twMerge } from "tailwind-merge";
 import {
   BrandLogo,
@@ -16,6 +17,10 @@ import { useIsClient } from "~/hooks/use-is-client";
 
 export const Header = () => {
   const { resolvedTheme: currentTheme, setTheme } = useTheme();
+
+  const toggleTheme = useCallback(() => {
+    setTheme(currentTheme === "light" ? "dark" : "light");
+  }, [currentTheme, setTheme]);
 
   return (
     <header className="mx-auto flex w-full max-w-3xl items-center justify-between px-5">
@@ -58,7 +63,7 @@ export const Header = () => {
             "touch-hitbox cursor-pointer rounded-md p-1 transition-all duration-150",
             "hover:bg-menu-background active:scale-[0.98]"
           )}
-          onClick={() => setTheme(currentTheme === "light" ? "dark" : "light")}
+          onClick={toggleTheme}
           type="button"
         >
           <motion.div

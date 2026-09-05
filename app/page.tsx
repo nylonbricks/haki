@@ -32,14 +32,14 @@ const Page = async () => {
         </div>
 
         <ItemListSection
-          getItemLink={(slug) => routes.thought(slug)}
+          getItemLink={routes.thought}
           items={thoughts}
           sectionHref={routes.thoughts}
           title="Thoughts"
         />
 
         <ItemListSection
-          getItemLink={(slug) => routes.article(slug)}
+          getItemLink={routes.article}
           items={articles}
           sectionHref={routes.articles}
           title="Articles"
