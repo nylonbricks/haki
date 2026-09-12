@@ -28,13 +28,11 @@ export const Giscus = ({ ...props }: ComponentProps<"section">) => {
     script.setAttribute("crossorigin", "anonymous");
     script.async = true;
 
-    // biome-ignore lint/suspicious/noUnnecessaryConditions: biome infers the ref as attached at mount, but TypeScript still types ref.current as nullable.
     if (ref.current) {
       ref.current.appendChild(script);
     }
 
     return () => {
-      // biome-ignore lint/suspicious/noUnnecessaryConditions: same TS-nullable vs biome-mount-inference conflict; cleanup must stay null-safe.
       if (ref.current) {
         ref.current.innerHTML = "";
       }

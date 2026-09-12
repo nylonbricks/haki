@@ -37,7 +37,6 @@ export const NavigationMenu = () => {
 
   useEffect(() => {
     const ulElement = ulRef.current;
-    // biome-ignore lint/suspicious/noUnnecessaryConditions: biome infers the ref as attached at mount, but TypeScript still types ref.current as nullable.
     if (!ulElement) {
       return;
     }
